@@ -1,4 +1,3 @@
-
 /**
  * @snippet      Remove Company Input field from WooCommerce Checkout Page
  * @author        NCY DESIGN https://wordpress.ncy.design
@@ -48,8 +47,8 @@ function wps_add_select_checkout_field( $checkout ) {
 	    'label'         => __( 'Choose Delivery Time' ),
 	    'options'       => array(
 	    	'blank'		=> __( 'Select a delivery time', 'wps' ),
-	        'morning'	=> __( '10:30am - 02:00pm', 'wps' ),
-	        'afternoon'	=> __( '02:00pm - 04:00pm', 'wps' )
+	        '10:30am - 02:00pm'	=> __( '10:30am - 02:00pm', 'wps' ),
+	        '02:00pm - 04:00pm'	=> __( '02:00pm - 04:00pm', 'wps' )
 	    )
  ),
 
@@ -93,4 +92,3 @@ function wps_select_order_meta_keys( $keys ) {
 	return $keys;
 	
 }
-
