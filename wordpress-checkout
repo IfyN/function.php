@@ -1,0 +1,95 @@
+/**
+ * @snippet      Remove Company Input field from WooCommerce Checkout Page
+ * @author        NCY DESIGN https://wordpress.ncy.design
+ * @compatible    WooCommerce 3.7.0
+ */
+ 
+
+
+add_filter( 'woocommerce_checkout_fields' , 'ncydesign_remove_woocommerce_checkout_fields' );
+ 
+function ncydesign_remove_woocommerce_checkout_fields( $fields ) {
+unset($fields['billing']['billing_company']);// billing company
+unset($fields['shipping']['shipping_company']);     //shipping Company
+unset($fields['billing']['billing_city']);        // Billing City
+unset($fields['billing']['billing_postcode']);    // Billing Postcode
+unset($fields['billing']['billing_country']);     // Billing Country
+unset($fields['billing']['billing_state']);       //Billing State
+unset($fields['shipping']['shipping_address_2']);   // shipping Address 2
+
+unset($fields['shipping']['shipping_city']);        // shipping City
+
+unset($fields['shipping']['shipping_postcode']);    // shipping Postcode
+
+unset($fields['shipping']['shipping_country']);     // shipping Country
+
+unset($fields['shipping']['shipping_state']);       //shipping State
+//unset($fields['billing']['billing_address_2']);   // Billing Address 2
+
+ 
+return $fields;
+}
+
+
+
+
+
+
+//* Add select field to the checkout page for time option.
+add_action('woocommerce_before_order_notes', 'wps_add_select_checkout_field');
+function wps_add_select_checkout_field( $checkout ) {
+
+	echo '<h2>'.__('Delivery Time').'</h2>';
+
+	woocommerce_form_field( 'daypart', array(
+	    'type'          => 'select',
+	    'class'         => array( 'wps-drop' ),
+	    'label'         => __( 'Choose Delivery Time' ),
+	    'options'       => array(
+	    	'blank'		=> __( 'Select a delivery time', 'wps' ),
+	        'morning'	=> __( '10:30am - 02:00pm', 'wps' ),
+	        'afternoon'	=> __( '02:00pm - 04:00pm', 'wps' )
+	    )
+ ),
+
+	$checkout->get_value( 'daypart' ));
+
+}
+
+//* Process the checkout
+ add_action('woocommerce_checkout_process', 'wps_select_checkout_field_process');
+ function wps_select_checkout_field_process() {
+    global $woocommerce;
+
+    // Check if set, if its not set add an error.
+    if ($_POST['daypart'] == "blank")
+     wc_add_notice( '<strong>Please select a delivery time under Delivery time options</strong>', 'error' );
+
+ }
+ 
+
+//* Update the order meta with field value
+ add_action('woocommerce_checkout_update_order_meta', 'wps_select_checkout_field_update_order_meta');
+ function wps_select_checkout_field_update_order_meta( $order_id ) {
+
+   if ($_POST['daypart']) update_post_meta( $order_id, 'daypart', esc_attr($_POST['daypart']));
+
+ }
+ 
+//* Display field value on the order edition page
+add_action( 'woocommerce_admin_order_data_after_billing_address', 'wps_select_checkout_field_display_admin_order_meta', 10, 1 );
+function wps_select_checkout_field_display_admin_order_meta($order){
+
+	echo '<p><strong>'.__('Delivery option').':</strong> ' . get_post_meta( $order->id, 'daypart', true ) . '</p>';
+
+}
+
+//* Add selection field value to emails
+add_filter('woocommerce_email_order_meta_keys', 'wps_select_order_meta_keys');
+function wps_select_order_meta_keys( $keys ) {
+
+	$keys['Daypart:'] = 'daypart';
+	return $keys;
+	
+}
+
