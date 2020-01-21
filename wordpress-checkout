@@ -1,3 +1,4 @@
+
 /**
  * @snippet      Remove Company Input field from WooCommerce Checkout Page
  * @author        NCY DESIGN https://wordpress.ncy.design
@@ -13,7 +14,7 @@ unset($fields['billing']['billing_company']);// billing company
 unset($fields['shipping']['shipping_company']);     //shipping Company
 unset($fields['billing']['billing_city']);        // Billing City
 unset($fields['billing']['billing_postcode']);    // Billing Postcode
-unset($fields['billing']['billing_country']);     // Billing Country
+//unset($fields['billing']['billing_country']);     // Billing Country
 unset($fields['billing']['billing_state']);       //Billing State
 unset($fields['shipping']['shipping_address_2']);   // shipping Address 2
 
@@ -24,7 +25,7 @@ unset($fields['shipping']['shipping_postcode']);    // shipping Postcode
 unset($fields['shipping']['shipping_country']);     // shipping Country
 
 unset($fields['shipping']['shipping_state']);       //shipping State
-//unset($fields['billing']['billing_address_2']);   // Billing Address 2
+unset($fields['billing']['billing_address_2']);   // Billing Address 2
 
  
 return $fields;
